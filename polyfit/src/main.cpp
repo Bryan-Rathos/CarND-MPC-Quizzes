@@ -7,9 +7,11 @@
 using namespace Eigen;
 
 // Evaluate a polynomial.
-double polyeval(Eigen::VectorXd coeffs, double x) {
+double polyeval(Eigen::VectorXd coeffs, double x) 
+{
   double result = 0.0;
-  for (int i = 0; i < coeffs.size(); i++) {
+  for (int i = 0; i < coeffs.size(); i++) 
+  {
     result += coeffs[i] * pow(x, i);
   }
   return result;
@@ -18,18 +20,21 @@ double polyeval(Eigen::VectorXd coeffs, double x) {
 // Fit a polynomial.
 // Adapted from
 // https://github.com/JuliaMath/Polynomials.jl/blob/master/src/Polynomials.jl#L676-L716
-Eigen::VectorXd polyfit(Eigen::VectorXd xvals, Eigen::VectorXd yvals,
-                        int order) {
+Eigen::VectorXd polyfit(Eigen::VectorXd xvals, Eigen::VectorXd yvals, int order) 
+{
   assert(xvals.size() == yvals.size());
   assert(order >= 1 && order <= xvals.size() - 1);
   Eigen::MatrixXd A(xvals.size(), order + 1);
 
-  for (int i = 0; i < xvals.size(); i++) {
+  for (int i = 0; i < xvals.size(); i++) 
+  {
     A(i, 0) = 1.0;
   }
 
-  for (int j = 0; j < xvals.size(); j++) {
-    for (int i = 0; i < order; i++) {
+  for (int j = 0; j < xvals.size(); j++) 
+  {
+    for (int i = 0; i < order; i++) 
+    {
       A(j, i + 1) = A(j, i) * xvals(j);
     }
   }
@@ -39,7 +44,8 @@ Eigen::VectorXd polyfit(Eigen::VectorXd xvals, Eigen::VectorXd yvals,
   return result;
 }
 
-int main() {
+int main() 
+{
   Eigen::VectorXd xvals(6);
   Eigen::VectorXd yvals(6);
   // x waypoint coordinates
@@ -47,11 +53,14 @@ int main() {
   // y waypoint coordinates
   yvals << 5.17, -2.25, -15.306, -29.46, -42.85, -57.6116;
 
-  // TODO: use `polyfit` to fit a third order polynomial to the (x, y)
-  // coordinates.
+  // TODO: use `polyfit` to fit a third order polynomial to the (x, y) coordinates.
+  VectorXd coeffs = polyfit(xvals, yvals, 3);
 
-  for (double x = 0; x <= 20; x += 1.0) {
+  for (double x = 0; x <= 20; x += 1.0) 
+  {
     // TODO: use `polyeval` to evaluate the x values.
+    double error = polyeval(coeffs, x);
+    std::cout << error << std::endl; 
   }
 
   // Expected output
